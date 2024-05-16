@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/plugins/world_domination" >
+        <file>icon.png</file>
+    </qresource>
+</RCC>
