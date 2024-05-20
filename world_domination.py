@@ -64,17 +64,13 @@ class WorldDomination:
         # Declare instance attributes
         self.actions = []
         self.menu = self.tr(u'&World Domination')
-        # TODO: We are going to let the user set this up in a future iteration
         self.toolbar = self.iface.addToolBar(u'WorldDomination')
         self.toolbar.setObjectName(u'WorldDomination')
-
-        #print "** INITIALIZING WorldDomination"
 
         self.pluginIsActive = False
         self.dockwidget = None
 
 
-    # noinspection PyMethodMayBeStatic
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
 
@@ -86,7 +82,6 @@ class WorldDomination:
         :returns: Translated version of message.
         :rtype: QString
         """
-        # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate('WorldDomination', message)
 
 
@@ -179,24 +174,14 @@ class WorldDomination:
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
 
-        #print "** CLOSING WorldDomination"
-
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)
-
-        # remove this statement if dockwidget is to remain
-        # for reuse if plugin is reopened
-        # Commented next statement since it causes QGIS crashe
-        # when closing the docked window:
-        # self.dockwidget = None
 
         self.pluginIsActive = False
 
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
-
-        #print "** UNLOAD WorldDomination"
 
         for action in self.actions:
             self.iface.removePluginMenu(
@@ -214,19 +199,10 @@ class WorldDomination:
         if not self.pluginIsActive:
             self.pluginIsActive = True
 
-            #print "** STARTING WorldDomination"
-
-            # dockwidget may not exist if:
-            #    first run of plugin
-            #    removed on close (see self.onClosePlugin method)
             if self.dockwidget == None:
-                # Create the dockwidget (after translation) and keep reference
                 self.dockwidget = WorldDominationDockWidget()
 
-            # connect to provide cleanup on closing of dockwidget
             self.dockwidget.closingPlugin.connect(self.onClosePlugin)
 
-            # show the dockwidget
-            # TODO: fix to allow choice of dock location
             self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
             self.dockwidget.show()
