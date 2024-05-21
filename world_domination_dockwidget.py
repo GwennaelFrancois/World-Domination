@@ -40,6 +40,26 @@ class WorldDominationDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         super(WorldDominationDockWidget, self).__init__(parent)
         self.setupUi(self)
 
+        self.playersUi = {
+            1: {"group": self.p1Group, "units": self.p1Reg, "territories": self.p1Ter, "stats": self.p1Stats},
+            2: {"group": self.p2Group, "units": self.p2Reg, "territories": self.p2Ter, "stats": self.p2Stats},
+            3: {"group": self.p3Group, "units": self.p3Reg, "territories": self.p3Ter, "stats": self.p3Stats},
+            4: {"group": self.p4Group, "units": self.p4Reg, "territories": self.p4Ter, "stats": self.p4Stats},
+            5: {"group": self.p5Group, "units": self.p5Reg, "territories": self.p5Ter, "stats": self.p5Stats}
+        }
+
     def closeEvent(self, event):
         self.closingPlugin.emit()
         event.accept()
+    
+    def hidePlayer(self, player: int) -> None:
+        self.playersUi[player]["group"].hide()
+
+    def setUnits(self, player: int, units: int) -> None:
+        self.playersUi[player]["units"].setText(f"{units} Régiments")
+
+    def setTerritories(self, player: int, territories: int) -> None:
+        self.playersUi[player]["territories"].setText(f"{territories} Territoires")
+
+    def setStats(self, player: int, capitals: int, cities: int,  missions: int) -> None:
+        self.playersUi[player]["stats"].setText(f"{capitals} C / {cities} V / {missions} M")

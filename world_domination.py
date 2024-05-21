@@ -206,3 +206,7 @@ class WorldDomination:
 
             self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
             self.dockwidget.show()
+
+            self.dockwidget.setUnits(2, 3)
+            self.dockwidget.setTerritories(3, 4)
+            self.dockwidget.setStats(5, 1, 3, 55)

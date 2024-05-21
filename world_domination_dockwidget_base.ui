@@ -58,13 +58,6 @@
               </widget>
              </item>
              <item>
-              <widget class="Line" name="line_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-              </widget>
-             </item>
-             <item>
               <widget class="QGroupBox" name="p2Group">
                <property name="title">
                 <string>Joueur 2</string>
@@ -92,13 +85,6 @@
                  </widget>
                 </item>
                </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="Line" name="line_3">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
               </widget>
              </item>
              <item>
@@ -163,13 +149,6 @@
                  </widget>
                 </item>
                </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="Line" name="line">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
               </widget>
              </item>
              <item>
