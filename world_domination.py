@@ -217,41 +217,20 @@ class WorldDomination:
         if self.game is None: return
         self.debugLabel(str(self.game))
         self.restoreGameUi(self.game)
-        self.debugLabel(str(self.drawTurns(self.game.nbPlayers)))
-
-    def drawTurns(self, nbPlayers: int) -> list:
-        """Draw turns of players
-
-        :param nbPlayers: number of players in the game
-        :type nbPlayers: int
-        :return: ordered list of players ex : [3, 4, 1, 2, 5]
-        :rtype: list
-        """
-        players = [p+1 for p in range(nbPlayers)]
-        ordered = []
-        dices = [rollDice() for _ in players]
-
-        # @todo do smthg for the draws
-        for _ in range(nbPlayers):
-            index = dices.index(max(dices))
-            dices.pop(index)
-            ordered.append(players.pop(index))
-        
-        return ordered
-
+        self.game.drawTurns()
+        self.debugLabel(str(self.game.turns))
 
     def loadOrCreateGame(self) -> Game:
-        """Ask user if he wants to play a new game a load a previously saved one
+        """Ask user if he wants to play a new game or load a previously saved one
         return Game object (if None : cancel)
         """
-        # @todo load new game
         createNewGame = True
         game = None
         if createNewGame:
             nbPlayers = self.askNbPlayers()
             game = Game(nbPlayers)
         else:
-            # @todo
+            # @todo load new game
             pass
         return game
 
