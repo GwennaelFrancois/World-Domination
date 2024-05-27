@@ -26,23 +26,17 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 # Initialize Qt resources from file resources.py
 from .resources import *
+from .game import Game
 
 # Import the code for the DockWidget
 from .world_domination_dockwidget import WorldDominationDockWidget
+from .toolbox import rollDice
 import os.path
 
+MAX_PLAYERS = 5
 
 class WorldDomination:
-    """QGIS Plugin Implementation."""
-
     def __init__(self, iface):
-        """Constructor.
-
-        :param iface: An interface instance that will be passed to this class
-            which provides the hook by which you can manipulate the QGIS
-            application at run time.
-        :type iface: QgsInterface
-        """
         # Save reference to the QGIS interface
         self.iface = iface
 
@@ -206,7 +200,75 @@ class WorldDomination:
 
             self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
             self.dockwidget.show()
+            self.runGame()
+        
+    
+    # GAME --------------------------------------------------------------------------
+    def debugLabel(self, message: str):
+        """Function to set text the debug label (to remove)
 
-            self.dockwidget.setUnits(2, 3)
-            self.dockwidget.setTerritories(3, 4)
-            self.dockwidget.setStats(5, 1, 3, 55)
+        :param message: Text message
+        :type message: str
+        """
+        self.dockwidget.debugLabel.setText(message)
+
+    def runGame(self):
+        self.game = self.loadOrCreateGame()
+        if self.game is None: return
+        self.debugLabel(str(self.game))
+        self.restoreGameUi(self.game)
+        self.debugLabel(str(self.drawTurns(self.game.nbPlayers)))
+
+    def drawTurns(self, nbPlayers: int) -> list:
+        """Draw turns of players
+
+        :param nbPlayers: number of players in the game
+        :type nbPlayers: int
+        :return: ordered list of players ex : [3, 4, 1, 2, 5]
+        :rtype: list
+        """
+        players = [p+1 for p in range(nbPlayers)]
+        ordered = []
+        dices = [rollDice() for _ in players]
+
+        # @todo do smthg for the draws
+        for _ in range(nbPlayers):
+            index = dices.index(max(dices))
+            dices.pop(index)
+            ordered.append(players.pop(index))
+        
+        return ordered
+
+
+    def loadOrCreateGame(self) -> Game:
+        """Ask user if he wants to play a new game a load a previously saved one
+        return Game object (if None : cancel)
+        """
+        # @todo load new game
+        createNewGame = True
+        game = None
+        if createNewGame:
+            nbPlayers = self.askNbPlayers()
+            game = Game(nbPlayers)
+        else:
+            # @todo
+            pass
+        return game
+
+    def askNbPlayers(self):
+        """Ask the user how many players are playing (between 3 and 5 included) (default is 3 players)
+        """
+        # @todo
+        return 3
+
+    def restoreGameUi(self, game: Game):
+        """Restore UI from given game object
+
+        :param game: Game object
+        :type game: Game
+        """
+        for player in self.game.players.keys():
+            self.dockwidget.setPlayerData(self.game.players[player], player)
+        
+        for playerToHide in range(MAX_PLAYERS - self.game.nbPlayers):
+            self.dockwidget.hidePlayer(MAX_PLAYERS-playerToHide)

@@ -53,13 +53,55 @@ class WorldDominationDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         event.accept()
     
     def hidePlayer(self, player: int) -> None:
+        """Hide player in UI
+
+        :param player: Player index
+        :type player: int
+        """
         self.playersUi[player]["group"].hide()
 
+    def setPlayerData(self, player: dict, number: int) -> None:
+        """Set a player's data
+
+        :param player: player's data (from Game object) 
+        :type player: dict
+        :param number: player's number
+        :type player: int
+        """
+        self.setUnits(number, player["units"])
+        self.setTerritories(number, player["territories"])
+        self.setStats(number, player["capitals"], player["cities"], player["missions"])
+
     def setUnits(self, player: int, units: int) -> None:
+        """Set players units in UI
+
+        :param player: Player index
+        :type player: int
+        :param units: Units
+        :type units: int
+        """
         self.playersUi[player]["units"].setText(f"{units} Régiments")
 
     def setTerritories(self, player: int, territories: int) -> None:
+        """Set players territories in UI
+
+        :param player: Player index
+        :type player: int
+        :param territories: Territories
+        :type territories: int
+        """
         self.playersUi[player]["territories"].setText(f"{territories} Territoires")
 
     def setStats(self, player: int, capitals: int, cities: int,  missions: int) -> None:
+        """Set other playrs stats in UI
+
+        :param player: Player index
+        :type player: int
+        :param capitals: Capitals
+        :type capitals: int
+        :param cities: Cities
+        :type cities: int
+        :param missions: Missions
+        :type missions: int
+        """
         self.playersUi[player]["stats"].setText(f"{capitals} C / {cities} V / {missions} M")
